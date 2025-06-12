@@ -1,0 +1,39 @@
+.header {
+  background-color: #f4e1d2; 
+  padding: 20px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #d2b69d;
+  border-radius: 5px;
+  width: 300px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #a67c52; 
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #a67c52; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #8b5a2b; 
+}

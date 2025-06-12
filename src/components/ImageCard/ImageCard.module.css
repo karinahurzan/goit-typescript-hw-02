@@ -1,0 +1,16 @@
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-height: 300px;
+
+}
+
+img {
+  display: block;
+  object-fit: cover;
+  object-position: 50% 50%;
+  width: 100%;
+  min-height: 300px;
+  border-radius: 10px 10px 0 0;
+}
