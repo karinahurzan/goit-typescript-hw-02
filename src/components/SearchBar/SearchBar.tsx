@@ -3,7 +3,11 @@ import { toast } from 'react-hot-toast';
 import css from './SearchBar.module.css';
 import { CiSearch } from 'react-icons/ci';
 
-const SearchBar = ({ onSubmit }) => {
+interface Props {
+  onSubmit: (query: string) => void;
+}
+
+const SearchBar: React.FC<Props> = ({ onSubmit }) => {
   return (
     <header className={css.header}>
       <Formik

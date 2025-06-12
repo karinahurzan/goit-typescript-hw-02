@@ -8,21 +8,26 @@ import ImageGallery from './components/ImageGallery/ImageGallery';
 import ImageModal from './components/ImageModal/ImageModal';
 import './App.css';
 import { useDebounce } from 'use-debounce';
-import React from 'react';
+import { UnsplashImage } from './types';
 
-const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY;
+const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY as string;
 
 function App() {
-  const [photos, setPhotos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
+  const [photos, setPhotos] = useState<UnsplashImage[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [query, setQuery] = useState<string>('');
   const [debouncedQuery] = useDebounce(query, 300);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<UnsplashImage | null>(
+    null
+  );
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-  const fetchPhotos = async (searchQuery, pageNumber) => {
+  const fetchPhotos = async (
+    searchQuery: string,
+    pageNumber: number
+  ): Promise<void> => {
     setIsLoading(true);
     setError(null);
 
@@ -39,10 +44,10 @@ function App() {
         }
       );
 
-      setPhotos(prevPhotos =>
-        pageNumber === 1 ? data.results : [...prevPhotos, ...data.results]
+      setPhotos(prev =>
+        pageNumber === 1 ? data.results : [...prev, ...data.results]
       );
-    } catch (error) {
+    } catch (error: any) {
       if (error.response) {
         setError(
           `Error: ${error.response.status} - ${error.response.data.message}`
@@ -67,25 +72,13 @@ function App() {
   const handleLoadMore = async () => {
     const nextPage = page + 1;
     setPage(nextPage);
-
     await fetchPhotos(debouncedQuery, nextPage);
-
     setTimeout(() => {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: 'smooth',
       });
     }, 100);
-  };
-
-  const openModal = image => {
-    setModalIsOpen(true);
-    setSelectedImage(image);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setSelectedImage(null);
   };
 
   return (
@@ -97,18 +90,15 @@ function App() {
       {!isLoading && (
         <>
           {photos.length === 0 && debouncedQuery && (
-            <p>
-              No results found for "{debouncedQuery}". Please try a different
-              search.
-            </p>
+            <p>No results found for "{debouncedQuery}".</p>
           )}
-          <ImageGallery images={photos} onImageClick={openModal} />
+          <ImageGallery images={photos} onImageClick={setSelectedImage} />
           {photos.length > 0 && <LoadMoreBtn onClick={handleLoadMore} />}
         </>
       )}
       <ImageModal
         isOpen={modalIsOpen}
-        onClose={closeModal}
+        onClose={() => setModalIsOpen(false)}
         selectedImage={selectedImage}
       />
     </div>
